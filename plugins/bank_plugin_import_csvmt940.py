@@ -48,8 +48,9 @@ def fn_unique(context, line_json):
         fetch=build_fetchxml_by_alias(context,"bank_account_mapping",data=data,type="insert")
         fetchparser=FetchXmlParser(fetch,context)
         DatabaseServices.exec(fetchparser, context,fetch_mode=0, run_as_system=False)
+        line_json['account_id']=line_json['Auftragskonto']
     else:
-        line_json['Auftragskonto']=rs.get_result()[0]['map_to']
+        line_json['account_id']=rs.get_result()[0]['map_to']
 
 
 def recalc_all_accounts(context):

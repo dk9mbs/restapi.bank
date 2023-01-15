@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS bank_item_category(
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 INSERT IGNORE INTO bank_item_category(id, name) VALUES('SPAREN','Sparen');
 INSERT IGNORE INTO bank_item_category(id, name) VALUES('TANKEN','Tanken');
 INSERT IGNORE INTO bank_item_category(id, name) VALUES('KFZ','KFZ');
@@ -80,6 +81,41 @@ CREATE TABLE IF NOT EXISTS bank_item(
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+call api_proc_create_table_field_instance(100030001, 'id','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='ID' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'auftragskonto','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='Auftragskonto' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'buchungstag','datetime',9,'{disabled: true}', @out_value);
+update api_table_field SET label='Buchungstag' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'valutadatum','datetime',9,'{disabled: true}', @out_value);
+update api_table_field SET label='Valutadatum' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'buchungstext','string',18,'{disabled: true}', @out_value);
+update api_table_field SET label='Buchungstext' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'verwendungszweck','string',18,'{disabled: true}', @out_value);
+update api_table_field SET label='Verwendungszweck' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'beguenstigter_zahlungspflichtiger','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='Begünstigter/Zahlungspflichtiger' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'kontonummer','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='Kontonummer' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'blz','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='BLZ' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'betrag','decimal',14,'{disabled: true}', @out_value);
+update api_table_field SET label='Betrag' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'waehrung','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='WKZ' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'info','string',18,'{disabled: true}', @out_value);
+update api_table_field SET label='Info' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'created_on','datetime',9,'{disabled: true}', @out_value);
+update api_table_field SET label='Erstellt am' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'category_id','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='Kategorie' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'account_id','string',1,'{disabled: true}', @out_value);
+update api_table_field SET label='Konto' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030001, 'raw_id','string',18,'{disabled: true}', @out_value);
+update api_table_field SET label='ID Quelle' WHERE id=@out_value;
+
+
+
 CREATE TABLE IF NOT EXISTS bank_item_category_mapping(
     id int NOT NULL auto_increment,
     field_name varchar(100) NOT NULL COMMENT 'For example: Konto',
@@ -107,6 +143,14 @@ INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,des
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
     VALUES
     (100030002,'bank_item_category','bank_item_category','id','string','name',-1,10003);
+
+call api_proc_create_table_field_instance(100030002, 'id','string',1,'{disabled: false}', @out_value);
+update api_table_field SET label='ID' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030002, 'name','string',1,'{disabled: false}', @out_value);
+update api_table_field SET label='Bezeichnung' WHERE id=@out_value;
+call api_proc_create_table_field_instance(100030002, 'datetime','datetime',9,'{disabled: true}', @out_value);
+update api_table_field SET label='Erstellt am' WHERE id=@out_value;
+
 
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
     VALUES
