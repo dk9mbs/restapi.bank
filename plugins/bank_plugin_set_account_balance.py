@@ -1,7 +1,6 @@
 from core.fetchxmlparser import FetchXmlParser
 from services.database import DatabaseServices
 from core import log
-from tuxlog_lib_cty import CtyImport
 from services.fetchxml import build_fetchxml_by_alias
 from core.plugin import ProcessTools
 from bank_lib_account_tools import AccountTools
