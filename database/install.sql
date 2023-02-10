@@ -81,22 +81,6 @@ CREATE TABLE IF NOT EXISTS bank_item(
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-call api_proc_create_table_field_instance(100030001,10, 'id','ID', 'string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,20,'auftragskonto','Auftragskonto','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,30, 'buchungstag','Buchungsdatum','datetime',9,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,40, 'valutadatum','Valutadatum','datetime',9,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,50, 'buchungstext','Buchungstext','string',18,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,60, 'verwendungszweck','Verwendungszweck','string',18,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,70, 'beguenstigter_zahlungspflichtiger','Zahlungspflichtiger','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,80, 'kontonummer','Kontonummer','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,90, 'blz','BLZ','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,100, 'betrag','Betrag','decimal',14,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,110, 'waehrung','Wkz','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,120, 'info','Info','string',18,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,130, 'created_on','Erstellt am','datetime',9,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,140, 'category_id','Kategorie','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,150, 'account_id','Konto','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,160, 'id_raw','Rohdaten (ID)','string',18,'{"disabled": true}', @out_value);
 
 
 CREATE TABLE IF NOT EXISTS bank_item_category_mapping(
@@ -122,6 +106,23 @@ INSERT IGNORE INTO api_user_group(user_id,group_id,solution_id) VALUES (10003000
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
     VALUES
     (100030001,'bank_item','bank_item','id','string','verwendungszweck',-1,10003);
+
+call api_proc_create_table_field_instance(100030001,10, 'id','ID', 'string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,20,'auftragskonto','Auftragskonto','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,30, 'buchungstag','Buchungsdatum','datetime',9,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,40, 'valutadatum','Valutadatum','datetime',9,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,50, 'buchungstext','Buchungstext','string',18,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,60, 'verwendungszweck','Verwendungszweck','string',18,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,70, 'beguenstigter_zahlungspflichtiger','Zahlungspflichtiger','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,80, 'kontonummer','Kontonummer','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,90, 'blz','BLZ','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,100, 'betrag','Betrag','decimal',14,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,110, 'waehrung','Wkz','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,120, 'info','Info','string',18,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,130, 'created_on','Erstellt am','datetime',9,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,140, 'category_id','Kategorie','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,150, 'account_id','Konto','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,160, 'id_raw','Rohdaten (ID)','string',18,'{"disabled": true}', @out_value);
 
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
     VALUES
