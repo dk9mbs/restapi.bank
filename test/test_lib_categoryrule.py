@@ -7,9 +7,9 @@ from core.appinfo import AppInfo
 from core.fetchxmlparser import FetchXmlParser
 from core.plugin import Plugin
 from services.database import DatabaseServices
+from core.encoding_tools import get_file_encoding
 
-#from bank_plugin_set_account_balance import execute
-from bank_lib_account_tools import AccountTools
+from plugins.bank_lib_categoryrule import CategoryRule
 
 class TestFetchxmlParser(unittest.TestCase):
     def setUp(self):
@@ -19,19 +19,8 @@ class TestFetchxmlParser(unittest.TestCase):
 
     def test_import(self):
 
-        #record={"data": {"auftragskonto": {"value": "173001058"}} }
-
-        #record={"data": {"Auftragskonto": {"value": "DE65259501300173001058", "old_value": ""} }}
-
-        #plugin_context={"process_id": "1234567890"}
-        #execute(self.context,plugin_context, record)
-
-        account_tools=AccountTools(self.context)
-        account_tools.recalc_balance("DE65259501300173001058")
-
-        #account_tools=AccountTools(self.context)
-        #account_tools.recalc_balance("173001058")
-
+        rule=CategoryRule(self.context)
+        rule.execute()
         #self.assertEqual(record['band_id']['value'], 90)
     def tearDown(self):
         AppInfo.save_context(self.context, True)

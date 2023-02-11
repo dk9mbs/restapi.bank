@@ -30,6 +30,19 @@ INSERT IGNORE INTO bank_item_category(id, name) VALUES('GARTEN','Garten');
 INSERT IGNORE INTO bank_item_category(id, name) VALUES('KLEIDUNG','Kleidung');
 INSERT IGNORE INTO bank_item_category(id, name) VALUES('EINKOMMEN','Lohn / Gehalt');
 INSERT IGNORE INTO bank_item_category(id, name) VALUES('URLAUB','Urlaub');
+INSERT IGNORE INTO bank_item_category(id, name) VALUES('SONSTIGES','sonstiges');
+
+CREATE TABLE IF NOT EXISTS bank_item_category_rule(
+    id int NOT NULL AUTO_INCREMENT COMMENT '',
+    name varchar(50) NOT NULL COMMENT '',
+    field varchar(250) NOT NULL COMMENT '',
+    operator varchar(10) NOT NULL DEFAULT 'contains' COMMENT '',
+    value varchar(250) NOT NULL COMMENT '',
+    category_id varchar(50) NOT NULL DEFAULT 'SONSTIGES' COMMENT '',
+    priority int NOT NULL DEFAULT '100' COMMENT '',
+    FOREIGN KEY(category_id) references bank_item_category(id),
+    PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS bank_currency(
     id varchar(10) NOT NULL,
@@ -120,17 +133,18 @@ call api_proc_create_table_field_instance(100030001,100, 'betrag','Betrag','deci
 call api_proc_create_table_field_instance(100030001,110, 'waehrung','Wkz','string',1,'{"disabled": true}', @out_value);
 call api_proc_create_table_field_instance(100030001,120, 'info','Info','string',18,'{"disabled": true}', @out_value);
 call api_proc_create_table_field_instance(100030001,130, 'created_on','Erstellt am','datetime',9,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,140, 'category_id','Kategorie','string',1,'{"disabled": true}', @out_value);
-call api_proc_create_table_field_instance(100030001,150, 'account_id','Konto','string',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030001,140, 'category_id','Kategorie','string',2,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030001,150, 'account_id','Konto','string',2,'{"disabled": true}', @out_value);
 call api_proc_create_table_field_instance(100030001,160, 'id_raw','Rohdaten (ID)','string',18,'{"disabled": true}', @out_value);
 
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
     VALUES
     (100030002,'bank_item_category','bank_item_category','id','string','name',-1,10003);
 
-call api_proc_create_table_field_instance(100030002,10, 'id','ID','string',1,'{disabled: false}', @out_value);
-call api_proc_create_table_field_instance(100030002,20, 'name','Bezeichnung','string',1,'{disabled: false}', @out_value);
-call api_proc_create_table_field_instance(100030002,30, 'datetime','Erstellt am','datetime',9,'{disabled: true}', @out_value);
+delete from api_table_field where name='datetime' and table_id=100030002;
+call api_proc_create_table_field_instance(100030002,10, 'id','ID','string',1,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030002,20, 'name','Bezeichnung','string',1,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030002,30, 'created_on','Erstellt am','datetime',9,'{"disabled": true}', @out_value);
 
 
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
@@ -145,18 +159,31 @@ INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,des
     VALUES
     (100030005,'bank_account','bank_account','id','string','name',-1,10003);
 
+call api_proc_create_table_field_instance(100030005,100, 'id','ID', 'string',1,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030005,200, 'name','Name', 'string',1,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030005,300, 'currency_id','Währung', 'string',2,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030005,400, 'balance','Kontostand', 'decimal',14,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030005,500, 'account_activity','Bewegungen', 'decimal',14,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030005,600, 'carry_over','Saldo', 'decimal',14,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030005,700, 'carry_over_on','Saldo am', 'datetime',9,'{"disabled": false}', @out_value);
+
 INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
     VALUES
     (100030006,'bank_account_mapping','bank_account_mapping','id','string','map_to',-1,10003);
 
+INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,desc_field_name,enable_audit_log,solution_id)
+    VALUES
+    (100030007,'bank_item_category_rule','bank_item_category_rule','id','string','name',-1,10003);
 
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'ID','id','string','{"disabled": false}');
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'Name','name','string','{"disabled": false}');
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'Währung','currency_id','string','{"disabled": false}');
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'Kontostand','balance','decimal','{"disabled": true}');
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'Bewegungen','account_activity','decimal','{"disabled": true}');
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'Saldo','carry_over','decimal','{"disabled": false}');
-INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030005, 'Saldo am','carry_over_on','date','{"disabled": false}');
+call api_proc_create_table_field_instance(100030007,100, 'id','ID', 'int',1,'{"disabled": true}', @out_value);
+call api_proc_create_table_field_instance(100030007,200, 'name','Name', 'string',1,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030007,300, 'field','Feldname', 'string',20,
+    '{"disabled": false, "listitems": "verwendungszweck;Verwendungszweck|kontonummer;Kontonummer|buchungstext;Buchungstext"}', @out_value);
+call api_proc_create_table_field_instance(100030007,400, 'operator','Operator', 'string',20,'{"disabled": false, "listitems": "contains;Enthält|=;Gleich"}', @out_value);
+call api_proc_create_table_field_instance(100030007,500, 'value','Wert', 'string',1,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030007,600, 'category_id','Kategorie', 'string',2,'{"disabled": false}', @out_value);
+call api_proc_create_table_field_instance(100030007,700, 'priority','Priorität', 'int',14,'{"disabled": true}', @out_value);
+
 
 INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030004, 'ID','id','string','{"disabled": false}');
 INSERT IGNORE INTO api_table_field (table_id,label,name,type_id,control_config) VALUES(100030004, 'Name','name','string','{"disabled": false}');
@@ -177,6 +204,12 @@ INSERT IGNORE INTO api_ui_app_nav_item(id, app_id,name,url,type_id,solution_id) 
 
 INSERT IGNORE INTO api_ui_app_nav_item(id, app_id,name,url,type_id,solution_id) VALUES (
 100030003,100030001,'Bank Konten Mapping','/ui/v1.0/data/view/bank_account_mapping/default',1,10003);
+
+INSERT IGNORE INTO api_ui_app_nav_item(id, app_id,name,url,type_id,solution_id) VALUES (
+100030004,100030001,'Kategorien','/ui/v1.0/data/view/bank_item_category/default',1,10003);
+
+INSERT IGNORE INTO api_ui_app_nav_item(id, app_id,name,url,type_id,solution_id) VALUES (
+100030005,100030001,'Kategorie Regeln','/ui/v1.0/data/view/bank_item_category_rule/default',1,10003);
 
 
 
@@ -204,9 +237,16 @@ INSERT IGNORE INTO api_group_permission (group_id,table_id,mode_create,mode_read
     VALUES
     (100030001,100030006,-1,-1,-1,-1,10003);
 
+INSERT IGNORE INTO api_group_permission (group_id,table_id,mode_create,mode_read,mode_update,mode_delete,solution_id)
+    VALUES
+    (100030001,100030007,-1,-1,-1,-1,10003);
+
 
 INSERT IGNORE INTO api_event_handler (id, plugin_module_name,publisher,event,type,sorting,solution_id,run_async, run_queue)
     VALUES (100030001, 'bank_plugin_import_csvmt940','textfileimport2_csvmt940','post','before',100,10003,-1,0);
+
+INSERT IGNORE INTO api_event_handler(id,plugin_module_name,publisher,event,type,run_async)
+VALUES (100030002,'plugins.bank_plugin_set_category','$timer_every_ten_minutes','execute','after',0);
 
 /*
 INSERT IGNORE INTO api_event_handler (id, plugin_module_name,publisher,event,type,sorting,solution_id,run_async, run_queue)
@@ -268,6 +308,45 @@ INSERT IGNORE INTO api_table_view (id,type_id,name,table_id,id_field_name,soluti
     <select>
         <field name="id" table_alias="i" header="Konto extern"/>
         <field name="map_to" table_alias="i" header="Konto intern"/>
+    </select>
+</restapi>');
+
+
+INSERT IGNORE INTO api_table_view (id,type_id,name,table_id,id_field_name,solution_id,fetch_xml) VALUES (
+100030004,'LISTVIEW','default',100030002,'id',10003,'<restapi type="select">
+    <table name="bank_item_category" alias="i"/>
+    <filter type="or">
+        <condition field="name" alias="i" value="$$query$$" operator="$$operator$$"/>
+        <condition field="id" alias="i" value="$$query$$" operator="$$operator$$"/>
+    </filter>
+    <orderby>
+        <field name="id" alias="i" sort="DESC"/>
+    </orderby>
+    <select>
+        <field name="id" table_alias="i" header="ID"/>
+        <field name="name" table_alias="i" header="Bezeichnung"/>
+    </select>
+</restapi>');
+
+INSERT IGNORE INTO api_table_view (id,type_id,name,table_id,id_field_name,solution_id,fetch_xml) VALUES (
+100030005,'LISTVIEW','default',100030007,'id',10003,'<restapi type="select">
+    <table name="bank_item_category_rule" alias="i"/>
+    <filter type="or">
+        <condition field="name" alias="i" value="$$query$$" operator="$$operator$$"/>
+        <condition field="value" alias="i" value="$$query$$" operator="$$operator$$"/>
+        <condition field="operator" alias="i" value="$$query$$" operator="$$operator$$"/>
+    </filter>
+    <orderby>
+        <field name="priority" alias="i" sort="DESC"/>
+    </orderby>
+    <select>
+        <field name="id" table_alias="i" header="ID"/>
+        <field name="name" table_alias="i" header="Bezeichnung"/>
+        <field name="field" table_alias="i" header="Feld"/>
+        <field name="operator" table_alias="i" header="Operator"/>
+        <field name="value" table_alias="i" header="Wert"/>
+        <field name="category_id" table_alias="i" header="Kategorie"/>
+        <field name="priority" table_alias="i" header="Priorität"/>
     </select>
 </restapi>');
 

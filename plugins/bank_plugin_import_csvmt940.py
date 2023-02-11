@@ -7,8 +7,9 @@ from services.fetchxml import build_fetchxml_by_alias
 from core.plugin import ProcessTools
 from core.file_system_tools import get_file_content
 
-from bank_lib_csvmt940 import CSVMT940Reader
-from bank_lib_account_tools import AccountTools
+from plugins.bank_lib_csvmt940 import CSVMT940Reader
+from plugins.bank_lib_account_tools import AccountTools
+from plugins.bank_lib_categoryrule import CategoryRule
 
 def __validate(params):
     if 'data' not in params:
@@ -22,7 +23,8 @@ def __validate(params):
 
 def fn_line(context, line_json):
     if line_json['Info']!="Umsatz gebucht":
-        print(line_json['Info'])
+        #do not print error on prod server charset
+        #print(line_json['Info'])
         return
 
     plugin_context=context.get_userdata('plugin_context')
@@ -33,7 +35,8 @@ def fn_line(context, line_json):
     rs=DatabaseServices.exec(fetchparser, context,fetch_mode=0, run_as_system=False)
 
     if rs.get_eof()==True:
-        print(f"New: {line_json}")
+        #donot print: error on server
+        #print(f"New: {line_json}")
         fetch=build_fetchxml_by_alias(context,"bank_item",line_json['id'],line_json,type="insert")
         fetchparser=FetchXmlParser(fetch,context)
         rs=DatabaseServices.exec(fetchparser, context,fetch_mode=0, run_as_system=False)
@@ -87,6 +90,9 @@ def execute(context, plugin_context, params):
     fr.read(fn_line, fn_unique)
 
     recalc_all_accounts(context)
+
+    rule=CategoryRule(context)
+    rule.execute()
 
     ProcessTools.set_process_status_info(context, plugin_context, f"Ready!")
 
