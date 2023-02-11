@@ -265,10 +265,11 @@ INSERT IGNORE INTO api_table_view (id,type_id,name,table_id,id_field_name,soluti
         <field name="valutadatum" alias="i" sort="DESC"/>
     </orderby>
     <select>
-        <field name="auftragskonto" table_alias="i" header="Auftragskonto"/>
+        <field name="category_id" table_alias="i" header="Kategorie"/>
         <field name="valutadatum" table_alias="i" header="Valutadatum"/>
         <field name="betrag" table_alias="i" header="Betrag"/>
         <field name="waehrung" table_alias="i" header="Wkz"/>
+        <field name="auftragskonto" table_alias="i" header="Auftragskonto"/>
         <field name="verwendungszweck" table_alias="i" header="Verwendungszweck"/>
         <field name="info" table_alias="i" header="Info"/>
         <field name="id" table_alias="i" header="ID"/>
