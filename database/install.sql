@@ -1,10 +1,11 @@
-DELETE FROM api_process_log WHERE event_handler_id IN (SELECT id FROM api_event_handler WHERE solution_id=10003);
+DELETE FROM api_process_log WHERE event_handler_id IN (SELECT id FROM api_event_handler WHERE solution_id=10003 or id=100030002);
 DELETE FROM api_group_permission WHERE solution_id=10003;
 DELETE FROM api_user_group WHERE solution_id=10003;
 DELETE FROM api_session WHERE user_id IN(100030001);
 DELETE FROM api_user WHERE solution_id=10003;
 DELETE FROM api_group WHERE solution_id=10003;
 DELETE FROM api_event_handler WHERE solution_id=10003;
+DELETE FROM api_event_handler WHERE id=100030002;
 DELETE FROM api_table_view where solution_id=10003;
 DELETE FROM api_ui_app_nav_item WHERE solution_id=10003;
 
@@ -245,8 +246,8 @@ INSERT IGNORE INTO api_group_permission (group_id,table_id,mode_create,mode_read
 INSERT IGNORE INTO api_event_handler (id, plugin_module_name,publisher,event,type,sorting,solution_id,run_async, run_queue)
     VALUES (100030001, 'bank_plugin_import_csvmt940','textfileimport2_csvmt940','post','before',100,10003,-1,0);
 
-INSERT IGNORE INTO api_event_handler(id,plugin_module_name,publisher,event,type,run_async)
-VALUES (100030002,'plugins.bank_plugin_set_category','$timer_every_ten_minutes','execute','after',0);
+INSERT IGNORE INTO api_event_handler(id,plugin_module_name,publisher,event,type,solution_id,run_async)
+VALUES (100030002,'plugins.bank_plugin_set_category','$timer_every_ten_minutes','execute','after',10003,-1);
 
 /*
 INSERT IGNORE INTO api_event_handler (id, plugin_module_name,publisher,event,type,sorting,solution_id,run_async, run_queue)
