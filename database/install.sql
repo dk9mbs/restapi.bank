@@ -179,7 +179,8 @@ INSERT IGNORE INTO api_table(id,alias,table_name,id_field_name,id_field_type,des
 call api_proc_create_table_field_instance(100030007,100, 'id','ID', 'int',1,'{"disabled": true}', @out_value);
 call api_proc_create_table_field_instance(100030007,200, 'name','Name', 'string',1,'{"disabled": false}', @out_value);
 call api_proc_create_table_field_instance(100030007,300, 'field','Feldname', 'string',20,
-    '{"disabled": false, "listitems": "verwendungszweck;Verwendungszweck|kontonummer;Kontonummer|buchungstext;Buchungstext"}', @out_value);
+    '{"disabled": false,
+    "listitems":"verwendungszweck;Verwendungszweck|kontonummer;Kontonummer|buchungstext;Buchungstext|beguenstigter_zahlungspflichtiger;Begünstigter/Zahlungspflichtiger"}', @out_value);
 call api_proc_create_table_field_instance(100030007,400, 'operator','Operator', 'string',20,'{"disabled": false, "listitems": "contains;Enthält|=;Gleich"}', @out_value);
 call api_proc_create_table_field_instance(100030007,500, 'value','Wert', 'string',1,'{"disabled": false}', @out_value);
 call api_proc_create_table_field_instance(100030007,600, 'category_id','Kategorie', 'string',2,'{"disabled": false}', @out_value);
