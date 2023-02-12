@@ -355,6 +355,19 @@ INSERT IGNORE INTO api_table_view (id,type_id,name,table_id,id_field_name,soluti
 
 
 
+/* out_data_formatter */
+INSERT IGNORE INTO api_data_formatter(id,name, table_id,type_id) VALUES (100030001,'x',100030001,2);
+
+UPDATE api_data_formatter SET
+name='bank_csvmt940',
+line_separator='@n',
+content_disposition='inline',
+file_name='bank_csmmt940.csv',
+mime_type='application/csv',
+template_header='"Auftragskonto";"Buchungstag";"Valutadatum";"Buchungstext";"Verwendungszweck";"Beguenstigter/Zahlungspflichtiger";"Kontonummer";"BLZ";"Betrag";"Waehrung";"Info";"Kategorie";"Konto"',
+template_line='"{{ data[\'auftragskonto\'] }}";"{{ data[\'buchungstag\'] }}";"{{ data[\'valutadatum\'] }}";"{{ data[\'buchungstext\'] }}";"{{ data[\'verwendungszweck\'] }}";"{{ data[\'beguenstigter_zahlungspflichtiger\'] }}";"{{ data[\'kontonummer\'] }}";"{{ data[\'blz\'] }}";{{ data[\'betrag\'] }};"{{ data[\'waehrung\'] }}";"{{ data[\'info\'] }}";"{{ data[\'category_id\'] }}";"{{ data[\'account_id\'] }}"',
+template_footer=null
+WHERE id=100030001 AND provider_id='MANUFACTURER';
 
 
 
