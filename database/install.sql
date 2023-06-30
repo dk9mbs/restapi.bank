@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS bank_item(
     verwendungszweck text,
     beguenstigter_zahlungspflichtiger varchar(1000),
     kontonummer varchar(100),
+    kategorie varchar(100),
     blz varchar(100),
     betrag decimal (10,2),
     waehrung varchar(10),
@@ -95,6 +96,7 @@ CREATE TABLE IF NOT EXISTS bank_item(
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE bank_item ADD column IF NOT EXISTS kategorie varchar(100) AFTER kontonummer;
 
 
 CREATE TABLE IF NOT EXISTS bank_item_category_mapping(
