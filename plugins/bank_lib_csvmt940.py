@@ -47,6 +47,7 @@ class CSVMT940Reader:
 
                 unique=""
                 for key, value in line.items():
+                    print(key.upper())
                     if key.upper() in whitelist:
                         if not key.upper() in blacklist:
                             if key.upper() in numericlist:
