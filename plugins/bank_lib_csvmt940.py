@@ -38,7 +38,7 @@ class CSVMT940Reader:
                 line['Buchungstag']=f"20{str(line['Buchungstag'])[6:8]}-{str(line['Buchungstag'])[3:5]}-{str(line['Buchungstag'])[0:2]}"
                 line['Valutadatum']=f"20{str(line['Valutadatum'])[6:8]}-{str(line['Valutadatum'])[3:5]}-{str(line['Valutadatum'])[0:2]}"
 
-                whitelist=['AUFTRAGSKONTO', 'BUCHUNGSTAG', 'VALUTADATUM', 'BUCHUNGSTEXT', 'VERWENDUNGSZWECK', 'BEGUENSTIGTER/ZAHLUNGSPFLICHTIGER', 'KONTONUMMER', 'BLZ', 'BETRAG', 'WAEHRUNG', 'INFO']
+                whitelist=['AUFTRAGSKONTO', 'BUCHUNGSTAG', 'VALUTADATUM', 'BUCHUNGSTEXT', 'VERWENDUNGSZWECK', 'BEGUENSTIGTER_ZAHLUNGSPFLICHTIGER', 'KONTONUMMER', 'BLZ', 'BETRAG', 'WAEHRUNG', 'INFO']
                 blacklist=['KATEGORIE']
                 numericlist=['BETRAG']
 
@@ -47,7 +47,6 @@ class CSVMT940Reader:
 
                 unique=""
                 for key, value in line.items():
-                    print(key.upper())
                     if key.upper() in whitelist:
                         if not key.upper() in blacklist:
                             if key.upper() in numericlist:
@@ -60,7 +59,7 @@ class CSVMT940Reader:
                 #print(f"{line['Betrag']} {unique}")
                 line['id']=hashlib.sha256(bytearray(unique,'UTF-8')).hexdigest()
                 line['id_raw']=unique
-
+                print(unique)
                 fn_line(self._context, line)
                 self._count+=1
 
