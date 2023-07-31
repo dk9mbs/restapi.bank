@@ -38,7 +38,8 @@ class CSVMT940Reader:
                 line['Buchungstag']=f"20{str(line['Buchungstag'])[6:8]}-{str(line['Buchungstag'])[3:5]}-{str(line['Buchungstag'])[0:2]}"
                 line['Valutadatum']=f"20{str(line['Valutadatum'])[6:8]}-{str(line['Valutadatum'])[3:5]}-{str(line['Valutadatum'])[0:2]}"
 
-                blacklist=[]
+                whitelist=['AUFTRAGSKONTO', 'BUCHUNGSTAG', 'VALUTADATUM', 'BUCHUNGSTEXT', 'VERWENDUNGSZWECK', 'BEGUENSTIGTER/ZAHLUNGSPFLICHTIGER', 'KONTONUMMER', 'BLZ', 'BETRAG', 'WAEHRUNG', 'INFO']
+                blacklist=['KATEGORIE']
                 numericlist=['BETRAG']
 
                 if fn_unique!=None:
@@ -46,13 +47,14 @@ class CSVMT940Reader:
 
                 unique=""
                 for key, value in line.items():
-                    if not key.upper() in blacklist:
-                        if key.upper() in numericlist:
-                            replaced_val="{:.2f}".format(value)
-                        else:
-                            replaced_val=re.sub(r"[^a-zA-Z0-9]","",str(value))
+                    if key.upper() in whitelist:
+                        if not key.upper() in blacklist:
+                            if key.upper() in numericlist:
+                                replaced_val="{:.2f}".format(value)
+                            else:
+                                replaced_val=re.sub(r"[^a-zA-Z0-9]","",str(value))
 
-                        unique=f"{unique}{replaced_val};"
+                            unique=f"{unique}{replaced_val};"
 
                 #print(f"{line['Betrag']} {unique}")
                 line['id']=hashlib.sha256(bytearray(unique,'UTF-8')).hexdigest()
