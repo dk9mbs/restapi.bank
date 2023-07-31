@@ -1,5 +1,6 @@
 import hashlib
 import re
+import decimal
 
 class CSVMT940Reader:
     def __init__(self, context, content):
@@ -32,13 +33,12 @@ class CSVMT940Reader:
                 for x in range(len(self._titles)):
                     line[self._titles[x]]=str(tmp[x]).strip().replace('\"','')
 
-                import decimal
                 line['Betrag']=decimal.Decimal(str(line['Betrag']).replace(',','.'))
 
                 line['Buchungstag']=f"20{str(line['Buchungstag'])[6:8]}-{str(line['Buchungstag'])[3:5]}-{str(line['Buchungstag'])[0:2]}"
                 line['Valutadatum']=f"20{str(line['Valutadatum'])[6:8]}-{str(line['Valutadatum'])[3:5]}-{str(line['Valutadatum'])[0:2]}"
 
-                whitelist=['AUFTRAGSKONTO', 'BUCHUNGSTAG', 'VALUTADATUM', 'BUCHUNGSTEXT', 'VERWENDUNGSZWECK', 'BEGUENSTIGTER_ZAHLUNGSPFLICHTIGER', 'KONTONUMMER', 'BLZ', 'BETRAG', 'WAEHRUNG', 'INFO']
+                whitelist=['AUFTRAGSKONTO', 'BUCHUNGSTAG', 'VALUTADATUM', 'BUCHUNGSTEXT', 'VERWENDUNGSZWECK', 'BEGUENSTIGTER_ZAHLUNGSPFLICHTIGER', 'KONTONUMMER', 'BLZ', 'BETRAG', 'WAEHRUNG', 'INFO', 'ACCOUNT_ID']
                 blacklist=['KATEGORIE']
                 numericlist=['BETRAG']
 
