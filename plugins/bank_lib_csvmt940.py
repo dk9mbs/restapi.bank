@@ -37,6 +37,8 @@ class CSVMT940Reader:
 
                 line['Buchungstag']=f"20{str(line['Buchungstag'])[6:8]}-{str(line['Buchungstag'])[3:5]}-{str(line['Buchungstag'])[0:2]}"
                 line['Valutadatum']=f"20{str(line['Valutadatum'])[6:8]}-{str(line['Valutadatum'])[3:5]}-{str(line['Valutadatum'])[0:2]}"
+                line['Buchungstag']=str(line['Buchungstag']).replace("29.02.", "28.09.")
+                line['Valutadatum']=str(line['Valutadatum']).replace("29.02.", "28.09.")
 
                 whitelist=['AUFTRAGSKONTO', 'BUCHUNGSTAG', 'VALUTADATUM', 'BUCHUNGSTEXT', 'VERWENDUNGSZWECK', 'BEGUENSTIGTER_ZAHLUNGSPFLICHTIGER', 'KONTONUMMER', 'BLZ', 'BETRAG', 'WAEHRUNG', 'INFO', 'ACCOUNT_ID']
                 blacklist=['KATEGORIE']
